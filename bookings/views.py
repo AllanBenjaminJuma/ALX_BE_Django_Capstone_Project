@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, serializers
 from rest_framework.response import Response
 from .models import Booking
 from .serializers import BookingsReadSerializer, BookingCreateSerializer
@@ -19,7 +19,7 @@ class ClientBookingListCreateView(generics.ListCreateAPIView):
         return Booking.objects.filter(client=client_profile)
     
     def perform_create(self, serializer):
-        return super().perform_create(serializer)
+        client_profile = Client.objects.get(user=self.request.user)
     
         architect_id = self.request.data.get('architect_id')
         if not architect_id:
@@ -30,7 +30,7 @@ class ClientBookingListCreateView(generics.ListCreateAPIView):
             raise serializers.ValidationError({'architect_id': 'Invalid architect'})
         
         serializer = self.get_serializer(data=self.request.data, context={'architect': architect})
-        serializer = is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=True)
         serializer.save(client=client_profile, architect=architect)
 
 class BookingDetailView(generics.RetrieveUpdateAPIView):
