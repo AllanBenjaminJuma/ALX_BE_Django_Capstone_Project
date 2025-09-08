@@ -19,7 +19,10 @@ class ClientBookingListCreateView(generics.ListCreateAPIView):
         return Booking.objects.filter(client=client_profile)
     
     def perform_create(self, serializer):
-        client_profile = Client.objects.get(user=self.request.user)
+        try:
+            client_profile = Client.objects.get(user=self.request.user)
+        except Client.DoesNotExist:
+            raise serializers.ValidationError({'details': 'You must create your profile before making a booking.'})
     
         architect_id = self.request.data.get('architect_id')
         if not architect_id:
