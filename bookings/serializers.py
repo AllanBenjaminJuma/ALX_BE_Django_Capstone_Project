@@ -13,15 +13,17 @@ class BookingsReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields=[
-            'id', 'client', 'architect',
+            'architect_id', 'client', 'architect',
             'appointment_date', 'status', 'notes',
             'attachment', 'created_at', 'updated_at'
         ]
 class BookingCreateSerializer(serializers.ModelSerializer):
+    architect_id = serializers.IntegerField(write_only=True)
     
     class Meta:
         model = Booking
-        fields = ['architect', 'appointment_date', 'notes']
+        fields = ['architect_id', 'appointment_date', 'notes']
+       
         
      # ensure that the date of the appointment is in future   
     def validate_appointment_date(self, value):
