@@ -8,14 +8,14 @@ from architects.serializers import ArchitectSerializer
 class BookingsReadSerializer(serializers.ModelSerializer):
     client = ClientSerializer(read_only=True)
     architect = ArchitectSerializer(read_only=True)
-    project = ProjectSerializer(read_only=True)
+  #  project = ProjectSerializer(read_only=True)
     
     class Meta:
         model = Booking
         fields=[
             'architect_id', 'client', 'architect',
             'appointment_date', 'status', 'notes',
-            'attachment', 'created_at', 'updated_at'
+            'created_at', 'updated_at'
         ]
 class BookingCreateSerializer(serializers.ModelSerializer):
     architect_id = serializers.IntegerField(write_only=True)

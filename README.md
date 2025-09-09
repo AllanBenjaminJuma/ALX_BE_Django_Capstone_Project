@@ -55,3 +55,10 @@ GET /architects/projects/<id>/ - Get single project for an architect
 PATCH /architects/projects/<id>/ - Update a project
 
 DELETE /architects/projects/<id>/ - Delete project.
+
+
+#### Bookings
+
+POST bookings/clients/bookings/ - Add a booking
+
+GET bookings/clients/bookings/ - Fetch a booking by a specific client, the architect profile and the appointment details
