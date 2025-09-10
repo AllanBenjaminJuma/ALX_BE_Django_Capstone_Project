@@ -12,6 +12,15 @@ class ArchitectListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+class ArchitectProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = ArchitectSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        
+        profile, created = Architect.objects.get_or_create(user=self.request.user)
+        return profile
+
 # 
 class ArchitectDetailView(generics.RetrieveUpdateAPIView):
     queryset = Architect.objects.all()
@@ -28,7 +37,7 @@ class ProjectListCreateView(generics.ListCreateAPIView):
     
     def perform_create(self, serializer):
         architect = Architect.objects.get(user = self.request.user)
-        serializer.save(architect=Architect)
+        serializer.save(architect=architect)
         
 class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Projects.objects.all()
